@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Export Wizard Menus -->
+    <menuitem id="menu_invoice_export_root" name="Export Tools" parent="account.menu_finance_reports" sequence="100"/>
+    <menuitem id="menu_invoice_export_action" name="Export Invoices CSV"
+              parent="menu_invoice_export_root"
+              action="custom_invoice_csv_reports.action_invoice_export_wizard" sequence="1"/>
+</odoo>

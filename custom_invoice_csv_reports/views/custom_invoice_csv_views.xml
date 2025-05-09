@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Export Wizard Action -->
+    <record id="action_invoice_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export Invoices</field>
+        <field name="res_model">invoice.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
