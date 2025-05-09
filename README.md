@@ -9,4 +9,4 @@ This repository contains custom modules developed for [HAPE Mountain Software Gm
 ## How to Use
 1. Clone this repository into your Odoo addons path:
    ```bash
-   git clone https://github.com/<your-username>/hape-odoo-custom-modules.git
+   git clone https://github.com/youssef-intiqaal/hape-odoo-custom-modules.git
