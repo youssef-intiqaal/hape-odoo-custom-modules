@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_import_product_wizard_form" model="ir.ui.view">
+        <field name="name">import.product.wizard.form</field>
+        <field name="model">import.product.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Products">
+                <group>
+                    <div class="alert alert-warning" role="alert">
+                        <h3>Product Import Notice</h3>
+                        This wizard will import products from the uploaded Excel file, based on the original export
+                        format of the Apotheke catalog.<br/>
+                        <strong>Please do not modify, remove, or reorder any columns in the file</strong> to ensure
+                        proper processing.<br/><br/>
+
+                        The import will begin from the third row of the file (the first two rows are assumed to be
+                        headers).<br/><br/>
+
+                        A corresponding <strong>Product Queue</strong> will be created. To finalize synchronization with
+                        Apotheke products,
+                        please navigate to <strong>Queues &gt; Product Queues</strong> and process the imported records
+                        to generate the product entries.<br/><br/>
+                        <strong>
+                            <p>Note: This process may take some time for large product lists, as it includes
+                                downloading
+                                and assigning product images.</p>
+                        </strong>
+                    </div>
+                </group>
+                <group>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Import Products" type="object" name="action_import_products" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_product_wizard" model="ir.actions.act_window">
+        <field name="name">Import Products</field>
+        <field name="res_model">import.product.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

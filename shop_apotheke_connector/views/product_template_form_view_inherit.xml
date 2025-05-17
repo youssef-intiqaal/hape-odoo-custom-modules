@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherited Form View to add EAN field -->
+    <record id="product_template_form_view_connector_inherit" model="ir.ui.view">
+        <field name="name">product.template.connector.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="ean"/>
+            </field>
+            <header position="inside">
+                <button name="action_update_quantity_apotheke"
+                        string="Update Apotheke Quantity &amp; Price"
+                        type="object"
+                        class="btn-primary"/>
+            </header>
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <label for="last_update_datetime"/>
+                <field name="last_update_datetime" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_variant_count']" position="before">
+                <widget name="web_ribbon" title="Updated" bg_color="text-bg-success"
+                        invisible="not apotheke_qty_updated"/>
+                <widget name="web_ribbon" title="Outdated" bg_color="text-bg-danger"
+                        invisible="apotheke_qty_updated"/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

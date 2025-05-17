@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Sequence for the Import Category Queue -->
+    <record id="seq_import_category_queue" model="ir.sequence">
+        <field name="name">Import Category Queue</field>
+        <field name="code">import.category.queue.sequence</field>
+        <field name="prefix">CQ</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for the Import Product Queue -->
+    <record id="seq_import_product_queue" model="ir.sequence">
+        <field name="name">Import Product Queue</field>
+        <field name="code">import.product.queue.sequence</field>
+        <field name="prefix">PQ</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Sequence for the Import Product Queue -->
+    <record id="seq_import_offer_queue" model="ir.sequence">
+        <field name="name">Import Offer Queue</field>
+        <field name="code">import.offer.queue.sequence</field>
+        <field name="prefix">OQ</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Shop List View -->
+    <record id="view_shop_apotheke_shop_tree" model="ir.ui.view">
+        <field name="name">shop.apotheke.shop.tree</field>
+        <field name="model">shop.apotheke.shop</field>
+        <field name="arch" type="xml">
+            <list string="Shop Apotheke Shops">
+                <field name="shop_number"/>
+                <field name="name"/>
+                <field name="setting_id" invisible="not setting_id" readonly="1"/>
+                <field name="channel_ids" widget="many2many_tags"/>
+                <field name="delivery_method_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Shop Form View -->
+    <record id="view_shop_apotheke_shop_form" model="ir.ui.view">
+        <field name="name">shop.apotheke.shop.form</field>
+        <field name="model">shop.apotheke.shop</field>
+        <field name="arch" type="xml">
+            <form string="Shop Apotheke Shop">
+                <sheet>
+                    <group string="Shop Details">
+                        <field name="shop_number"/>
+                        <field name="name"/>
+                        <field name="setting_id" readonly="1" invisible="not setting_id"/>
+                    </group>
+                    <group string="Active Shop Channels">
+                        <field name="channel_ids" nolabel="1">
+                            <list create="0" edit="0" delete="0">
+                                <field name="code"/>
+                                <field name="label"/>
+                                <field name="description"/>
+                            </list>
+                        </field>
+                    </group>
+                    <group string="Active Delivery Methods">
+                        <field name="delivery_method_ids" nolabel="1" readonly="1">
+                            <list create="0" edit="0" delete="0">
+                                <field name="code"/>
+                                <field name="name"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Shop Action -->
+    <record id="action_shop_apotheke_shop" model="ir.actions.act_window">
+        <field name="name">Shops</field>
+        <field name="res_model">shop.apotheke.shop</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'group_by': 'setting_id'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the shops to be used for integration.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_shop_apotheke_shop_channel_tree" model="ir.ui.view">
+        <field name="name">shop.apotheke.shop.channel.tree</field>
+        <field name="model">shop.apotheke.shop.channel</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="label"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="shop_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_shop_apotheke_shop_channel_form" model="ir.ui.view">
+        <field name="name">shop.apotheke.shop.channel.form</field>
+        <field name="model">shop.apotheke.shop.channel</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="label"/>
+                        <field name="code"/>
+                        <field name="description"/>
+                        <field name="shop_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_shop_apotheke_shop_channel" model="ir.actions.act_window">
+        <field name="name">Shop Channels</field>
+        <field name="res_model">shop.apotheke.shop.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'group_by': 'code'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create Shop Channels to link to Apotheke shops.</p>
+        </field>
+    </record>
+
+</odoo>

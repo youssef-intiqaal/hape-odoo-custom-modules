@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Category Queue Form View -->
+    <record id="view_import_category_queue_form" model="ir.ui.view">
+        <field name="name">import.category.queue.form</field>
+        <field name="model">import.category.queue</field>
+        <field name="arch" type="xml">
+            <form string="Import Category Queue" create="0">
+                <header>
+                    <button name="action_synchronize_categories"
+                            type="object"
+                            string="Synchronize Categories with Odoo"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_synchronize_categories"
+                            type="object"
+                            string="Retry Failed Lines"
+                            class="btn-primary"
+                            invisible="state in ['processed', 'draft']"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Proceeded" bg_color="text-bg-success"
+                            invisible="state != 'processed'"/>
+                    <group>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" required="True"/>
+                            </h1>
+                        </div>
+                        <field name="setting_id" readonly="1"/>
+                        <field name="create_date" widget="date"/>
+                    </group>
+                    <notebook>
+                        <page string="Category Lines">
+                            <field name="line_ids" readonly="state == 'processed'">
+                                <list editable="bottom" decoration-info="state == 'draft'"
+                                      decoration-success="state == 'processed'" decoration-danger="state == 'failed'"
+                                      create="0" edit="1" delete="0">
+                                    <field name="level"/>
+                                    <field name="code" readonly="1"/>
+                                    <field name="name"/>
+                                    <field name="parent_code" readonly="1"/>
+                                    <field name="parent_name" column_invisible="1"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                           decoration-success="state == 'processed'"
+                                           decoration-danger="state == 'failed'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids">
+                                <list decoration-info="status == 'info'"
+                                      decoration-success="status == 'success'"
+                                      decoration-danger="status == 'error'" create="0" edit="0" delete="0"
+                                      editable="top" default_order="status asc, create_date desc">
+                                    <field name="timestamp" readonly="1"/>
+                                    <field name="message" readonly="1"/>
+                                    <field name="status" widget="badge" decoration-info="status == 'info'"
+                                           decoration-success="status == 'success'"
+                                           decoration-danger="status == 'error'" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Category Queue Tree View -->
+    <record id="view_import_category_queue_tree" model="ir.ui.view">
+        <field name="name">import.category.queue.tree</field>
+        <field name="model">import.category.queue</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-warning="state == 'partially_processed'"
+                  decoration-success="state == 'processed'" decoration-danger="state == 'failed'" create="0">
+                <field name="name"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-warning="state == 'partially_processed'"
+                       decoration-success="state == 'processed'"
+                       decoration-danger="state == 'failed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+    <!-- Category Queue Action -->
+    <record id="action_import_category_queue" model="ir.actions.act_window">
+        <field name="name">Category Queues</field>
+        <field name="res_model">import.category.queue</field>
+        <field name="view_mode">list,form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_neutral_face">
+                There are no category queues for now.
+            </p>
+        </field>
+    </record>
+</odoo>

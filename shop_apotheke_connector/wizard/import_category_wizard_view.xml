@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import Category Wizard View -->
+    <record id="view_import_category_wizard" model="ir.ui.view">
+        <field name="name">import.category.wizard.form</field>
+        <field name="model">import.category.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Category Import">
+                <group>
+                    <field name="setting_id"/>
+                </group>
+                <group>
+                    <div class="alert alert-warning" role="alert" invisible="not setting_id">
+                        <h3>Category Import</h3>
+                        This wizard will initiate the import of all product categories from Shop Apotheke.<br/>
+                        A corresponding <strong>Category Queue</strong> will be created. <br/>To complete the
+                        synchronization
+                        with Odoo, please navigate to <strong>Queues &gt; Category Queues</strong>
+                        and process the imported records accordingly.
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_confirm_import" type="object" string="Import Categories" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Import Category Wizard Action -->
+    <record id="action_import_category_wizard" model="ir.actions.act_window">
+        <field name="name">Import Categories</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">import.category.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

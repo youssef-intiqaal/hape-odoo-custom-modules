@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Inherited Form View to add the code field -->
+    <record id="delivery_carrier_form_connector_inherit" model="ir.ui.view">
+        <field name="name">delivery.carrier.view.form.connector.inherit</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="model">delivery.carrier</field>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='delivery_type']" position="before">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+    <!-- Inherited List View to add the code field -->
+    <record id="delivery_carrier_list_connector_inherit" model="ir.ui.view">
+        <field name="name">delivery.carrier.view.list.connector.inherit</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_tree"/>
+        <field name="model">delivery.carrier</field>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="code"/>
+            </field>
+        </field>
+    </record>
+</odoo>

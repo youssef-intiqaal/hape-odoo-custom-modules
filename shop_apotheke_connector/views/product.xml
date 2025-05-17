@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product List View -->
+    <record id="view_apotheke_product_tree" model="ir.ui.view">
+        <field name="name">apotheke.product.tree</field>
+        <field name="model">apotheke.product</field>
+        <field name="arch" type="xml">
+            <list default_order="available_qty desc">
+                <header>
+                    <button name="action_sync_with_odoo"
+                            type="object"
+                            string="Link with Odoo Products"
+                            class="btn-primary"
+                    />
+                    <button name="action_update_odoo_product_quantities"
+                            string="Update Odoo Product Quantities"
+                            type="object"
+                            class="btn-primary"
+                    />
+                </header>
+                <field name="category_id" optional="show"/>
+                <field name="name" optional="show"/>
+                <field name="sku" optional="show"/>
+                <field name="ean" optional="show"/>
+                <field name="company_currency_id" column_invisible="1"/>
+                <field name="sale_price" optional="show" widget="monetary"
+                       options="{'currency_field': 'company_currency_id'}" column_invisible="1"/>
+                <field name="available_qty" optional="show" force_save="1"/>
+                <field name="odoo_product_id" optional="show"/>
+                <field name="setting_id" optional="hide"/>
+                <field name="shop_ids" widget="many2many_tags" optional="hide"/>
+                <field name="state_sync_odoo" widget="badge" optional="show"
+                       decoration-success="state_sync_odoo == 'synchronized'"
+                       decoration-danger="state_sync_odoo == 'not_synchronized'"/>
+                <field name="state_sync_apotheke" widget="badge" optional="hide"
+                       decoration-success="state_sync_apotheke == 'synchronized'"
+                       decoration-danger="state_sync_apotheke == 'not_synchronized'"/>
+                <field name="publish_date" optional="hide"/>
+                <field name="qty_updated" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Product Form View -->
+    <record id="view_apotheke_product_form" model="ir.ui.view">
+        <field name="name">apotheke.product.form</field>
+        <field name="model">apotheke.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_offers"
+                                class="oe_stat_button"
+                                icon="fa-tag"
+                                type="object"
+                                help="Related Offers"
+                                invisible="offer_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="offer_count"/></span>
+                                <span class="o_stat_text">Offers</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field
+                            name="main_image"
+                            widget="image"
+                            class="oe_avatar"
+                            options="{'convert_to_webp': True, 'preview_image': 'main_image'}"
+                    />
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" required="True"/>
+                        </h1>
+                    </div>
+                    <group string="Product Details">
+                        <field name="category_id"/>
+                        <field name="sku"/>
+                        <field name="ean"/>
+                        <field name="odoo_product_id"/>
+                        <field name="company_currency_id" invisible="1"/>
+                        <field name="sale_price" widget="monetary" options="{'currency_field': 'company_currency_id'}"
+                               invisible="1"/>
+                        <field name="available_qty"/>
+                        <field name="qty_updated" widget="boolean_toggle"/>
+                    </group>
+                    <group string="Publish Details">
+                        <field name="setting_id" invisible="not setting_id"/>
+                        <field name="shop_ids" widget="many2many_tags" invisible="not shop_ids"/>
+                        <field name="state_sync_odoo" widget="badge"
+                               decoration-success="state_sync_odoo == 'synchronized'"
+                               decoration-danger="state_sync_odoo == 'not_synchronized'"/>
+                        <field name="state_sync_apotheke" widget="badge"
+                               decoration-success="state_sync_apotheke == 'synchronized'"
+                               decoration-danger="state_sync_apotheke == 'not_synchronized'"/>
+
+                        <field name="publish_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Action -->
+    <record id="action_apotheke_product" model="ir.actions.act_window">
+        <field name="name">Apotheke Products</field>
+        <field name="res_model">apotheke.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first product and link it with Shop Apotheke
+            </p>
+        </field>
+    </record>
+</odoo>

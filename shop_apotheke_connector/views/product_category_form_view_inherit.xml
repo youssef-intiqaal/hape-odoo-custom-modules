@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherited List View to add the code field -->
+    <record id="product_category_list_view_connector_inherit" model="ir.ui.view">
+        <field name="name">product.category.list.inherit.connector</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_list_view"/>
+        <field name="arch" type="xml">
+            <field name="display_name" position="after">
+                <field name="code"/>
+            </field>
+        </field>
+    </record>
+    <!-- Inherited Form View to add the code field -->
+    <record id="product_category_form_view_connector_inherit" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.connector</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="before">
+                <field name="code"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

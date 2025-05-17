@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_shop_apotheke_root"
+              name="Shop Apotheke"
+              sequence="10"/>
+    <!-- Orders Menu -->
+    <menuitem id="menu_apotheke_orders"
+              name="Orders"
+              parent="menu_shop_apotheke_root"
+              action="action_apotheke_sale_orders"
+              sequence="1"/>
+    <!-- Products Menu -->
+    <menuitem id="menu_shop_apotheke_products"
+              name="Products"
+              parent="menu_shop_apotheke_root"
+              action="action_apotheke_product"
+              sequence="2"/>
+    <!-- Offers Menu -->
+    <menuitem id="menu_shop_apotheke_offers"
+              name="Offers"
+              parent="menu_shop_apotheke_root"
+              action="action_apotheke_product_offer"
+              sequence="3"/>
+    <!-- Operations Menu -->
+    <menuitem id="menu_operations_root"
+              name="Operations"
+              parent="menu_shop_apotheke_root"
+              sequence="4"/>
+    <!-- Import Categories Menu -->
+    <menuitem id="menu_import_categories"
+              name="Import Categories"
+              parent="menu_operations_root"
+              action="action_import_category_wizard"
+              sequence="1"/>
+    <!-- Import Products Menu -->
+    <menuitem id="menu_import_products"
+              name="Import Products"
+              parent="menu_operations_root"
+              action="action_import_product_wizard"
+              sequence="2"/>
+    <!-- Import Offers Menu -->
+    <menuitem id="menu_import_offers"
+              name="Import Offers"
+              parent="menu_operations_root"
+              action="action_import_offer_wizard"
+              sequence="3"/>
+    <!-- Import Orders Menu -->
+    <menuitem id="menu_import_orders"
+              name="Import Orders"
+              parent="menu_operations_root"
+              action="action_import_apotheke_order_wizard"
+              sequence="3"/>
+    <!-- Queues Menu -->
+    <menuitem id="menu_queues_root"
+              name="Queues"
+              parent="menu_shop_apotheke_root"
+              sequence="5"/>
+    <!-- Category Queues Menu -->
+    <menuitem id="menu_category_queue"
+              name="Category Queues"
+              parent="menu_queues_root"
+              action="action_import_category_queue"
+              sequence="1"/>
+    <!-- Product Queues Menu -->
+    <menuitem id="menu_product_queue"
+              name="Product Queues"
+              parent="menu_queues_root"
+              action="action_import_product_queue"
+              sequence="2"/>
+    <!-- Offer Queues Menu -->
+    <menuitem id="menu_offer_queue"
+              name="Offer Queues"
+              parent="menu_queues_root"
+              action="action_import_offer_queue"
+              sequence="3"/>
+    <!-- Configuration Menu -->
+    <menuitem id="menu_shop_apotheke_configuration"
+              name="Configuration"
+              parent="menu_shop_apotheke_root"
+              sequence="6"/>
+    <!-- Shops Menu -->
+    <menuitem id="menu_shop_apotheke_shop"
+              name="Shops"
+              parent="menu_shop_apotheke_configuration"
+              action="action_shop_apotheke_shop"
+              sequence="1"/>
+    <!-- Channels Menu -->
+    <menuitem id="menu_shop_apotheke_channel"
+              name="Channels"
+              parent="menu_shop_apotheke_configuration"
+              action="action_shop_apotheke_shop_channel"
+              sequence="2"/>
+    <!-- Settings Menu -->
+    <menuitem id="menu_shop_apotheke_settings"
+              name="Settings"
+              parent="menu_shop_apotheke_configuration"
+              action="action_shop_apotheke_settings"
+              sequence="3"/>
+    <!-- Taxes Menu -->
+    <menuitem id="menu_apotheke_tax"
+              name="Taxes"
+              parent="menu_shop_apotheke_configuration"
+              action="action_apotheke_tax"
+              sequence="4"/>
+
+</odoo>
