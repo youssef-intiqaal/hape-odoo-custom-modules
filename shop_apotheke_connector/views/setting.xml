@@ -31,7 +31,7 @@
                 </group>
                 <group string="Shops">
                     <field name="shop_ids" nolabel="1">
-                        <list>
+                        <list editable="bottom">
                             <field name="shop_number"/>
                             <field name="name"/>
                             <field name="channel_ids" widget="many2many_tags"/>
