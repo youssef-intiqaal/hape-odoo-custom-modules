@@ -25,7 +25,7 @@
                     <group string="Shop Details">
                         <field name="shop_number"/>
                         <field name="name"/>
-                        <field name="setting_id" readonly="1" invisible="not setting_id"/>
+                        <field name="setting_id" readonly="0"/>
                     </group>
                     <group string="Active Shop Channels">
                         <field name="channel_ids" nolabel="1">
