@@ -25,6 +25,7 @@ class SaleOrder(models.Model):
 
     @api.depends('order_line.accepted_on_apotheke')
     def _compute_accepted_on_apotheke(self):
+        """Compute if the entire order is accepted on Apotheke based on line states."""
         for order in self:
             if order.order_line:
                 order.accepted_on_apotheke = all(line.accepted_on_apotheke for line in order.order_line)
@@ -32,6 +33,7 @@ class SaleOrder(models.Model):
                 order.accepted_on_apotheke = False
 
     def accept_on_apotheke(self):
+        """Accepts the order and its lines via the Apotheke API."""
         for order in self:
             setting = order.shop_id.setting_id
             api_key = setting.api_key
@@ -105,10 +107,10 @@ class SaleOrder(models.Model):
                 })
 
     def action_confirm(self):
-        # 1) call the original confirm logic
+        # Call the original confirm logic
         result = super().action_confirm()
 
-        # 2) then for each confirmed order, pull in external info
+        # for each confirmed order, pull in external info
         for order in self:
             try:
                 if order.apotheke_order_id:
@@ -144,7 +146,6 @@ class SaleOrder(models.Model):
             'Authorization': setting.api_key,
         }
 
-        # API call
         try:
             resp = requests.get(url, params=params, headers=headers)
         except Exception as e:

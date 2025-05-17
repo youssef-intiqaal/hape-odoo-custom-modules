@@ -9,17 +9,25 @@ _logger = logging.getLogger(__name__)
 
 
 class ImportCategoryQueue(models.Model):
+    """Main model representing a queue for importing product categories."""
+
     _name = 'import.category.queue'
     _description = 'Import Category Queue'
     _inherit = ['mail.thread']
     _rec_name = 'name'
 
-    name = fields.Char(string='Reference', readonly=True, default= _('New'))
+    name = fields.Char(
+        string='Reference',
+        readonly=True,
+        default=_('New')
+    )
+
     setting_id = fields.Many2one(
         'shop.apotheke.connector.setting',
         string="Instance",
         required=True
     )
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('partially_processed', 'Partially Processed'),
@@ -27,17 +35,35 @@ class ImportCategoryQueue(models.Model):
         ('failed', 'Failed'),
     ], default='draft', tracking=True)
 
-    line_ids = fields.One2many('import.category.queue.line', 'queue_id', string='Category Lines')
-    log_ids = fields.One2many('import.category.queue.log', 'queue_id', string='Logs')
+    line_ids = fields.One2many(
+        'import.category.queue.line',
+        'queue_id',
+        string='Category Lines'
+    )  # List of category lines included in the queue
+
+    log_ids = fields.One2many(
+        'import.category.queue.log',
+        'queue_id',
+        string='Logs'
+    )  # Logs generated during synchronization
 
     @api.model
     def create(self, vals):
-        # Add the sequence
+        """Override create to assign a sequence number to the queue name."""
         if not vals.get('name') or vals['name'] == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('import.category.queue.sequence') or _('New')
         return super().create(vals)
 
     def action_synchronize_categories(self):
+        """
+        Main method to process category lines:
+        - Validates data
+        - Checks for duplicates
+        - Creates product categories
+        - Updates line states
+        - Logs results
+        - Sends user notification
+        """
         ProductCategory = self.env['product.category']
         total = len(self.line_ids.filtered(lambda l: l.state == 'draft'))
         failed = 0
@@ -91,10 +117,10 @@ class ImportCategoryQueue(models.Model):
                 _logger.exception(f"Error syncing category {line.code}: {str(e)}")
 
         # Update queue state based on results
-        if (proceeded == total and total > 0) or all(line.state=='processed' for line in self.line_ids):
+        if (proceeded == total and total > 0) or all(line.state == 'processed' for line in self.line_ids):
             self.state = 'processed'
             notif_type = 'success'
-        elif proceeded > 0 or any(line.state=='processed' for line in self.line_ids):
+        elif proceeded > 0 or any(line.state == 'processed' for line in self.line_ids):
             self.state = 'partially_processed'
             notif_type = 'warning'
         else:
@@ -109,6 +135,7 @@ class ImportCategoryQueue(models.Model):
         })
 
     def _create_log(self, status, message):
+        """Helper method to create a log entry for the queue."""
         self.log_ids.create({
             'queue_id': self.id,
             'timestamp': datetime.now(),
@@ -118,10 +145,18 @@ class ImportCategoryQueue(models.Model):
 
 
 class ImportCategoryQueueLine(models.Model):
+    """Model for individual category import lines within a queue."""
+
     _name = 'import.category.queue.line'
     _description = 'Import Category Queue Line'
 
-    queue_id = fields.Many2one('import.category.queue', string='Queue', required=True, ondelete='cascade')
+    queue_id = fields.Many2one(
+        'import.category.queue',
+        string='Queue',
+        required=True,
+        ondelete='cascade'
+    )
+
     level = fields.Integer(string='Level')
     code = fields.Char(string='Code')
     name = fields.Char(string='Name')
@@ -135,10 +170,26 @@ class ImportCategoryQueueLine(models.Model):
 
 
 class ImportCategoryQueueLog(models.Model):
+    """Model to log messages related to the category import queue."""
+
     _name = 'import.category.queue.log'
     _description = 'Import Category Queue Log'
 
-    queue_id = fields.Many2one('import.category.queue', string='Queue', ondelete='cascade')
-    timestamp = fields.Datetime(string='Timestamp', default=fields.Datetime.now)
+    queue_id = fields.Many2one(
+        'import.category.queue',
+        string='Queue',
+        ondelete='cascade'
+    )
+
+    timestamp = fields.Datetime(
+        string='Timestamp',
+        default=fields.Datetime.now
+    )
+
     message = fields.Text(string='Log Message')
-    status = fields.Selection([('info', 'Info'), ('success', 'Success'), ('error', 'Error')], default='info')
+
+    status = fields.Selection([
+        ('info', 'Info'),
+        ('success', 'Success'),
+        ('error', 'Error')
+    ], default='info')

@@ -37,6 +37,7 @@ class ImportOfferQueue(models.Model):
 
     @api.model
     def create(self, vals):
+        """Assign sequence name on creation."""
         if not vals.get('name') or vals['name'] == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('import.offer.queue.sequence') or _('New')
         return super().create(vals)
@@ -49,6 +50,7 @@ class ImportOfferQueue(models.Model):
         })
 
     def action_update_apotheke_products(self):
+        """Create or update Apotheke product offers from queue lines."""
         OfferModel = self.env['apotheke.product.offer']
 
         total = len(self.line_ids.filtered(lambda l: l.state == 'draft'))
@@ -127,7 +129,9 @@ class ImportOfferQueue(models.Model):
             _logger.error(f"Failed to send notification: {notif_err}")
 
         return True
+
     def create_offers(self):
+        """Create or update offers from draft queue lines and set offer_created flag."""
         OfferModel = self.env['apotheke.product.offer']
 
         total = len(self.line_ids.filtered(lambda l: l.state == 'draft'))
@@ -207,6 +211,7 @@ class ImportOfferQueue(models.Model):
         return True
 
     def action_generate_products(self):
+        """Generate missing Apotheke product records for unmatched offer lines."""
         ApothekeProduct = self.env['apotheke.product']
         created_count = 0
         failed_count = 0

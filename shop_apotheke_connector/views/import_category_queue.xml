@@ -85,6 +85,7 @@
             </list>
         </field>
     </record>
+
     <!-- Category Queue Action -->
     <record id="action_import_category_queue" model="ir.actions.act_window">
         <field name="name">Category Queues</field>

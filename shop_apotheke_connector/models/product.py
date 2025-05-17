@@ -58,25 +58,30 @@ class ApothekeProduct(models.Model):
 
     @api.onchange('odoo_product_id')
     def _onchange_odoo_product_id(self):
+        # Reset sync state if product link is removed
         for record in self:
             if not record.odoo_product_id:
                 record.state_sync_odoo = 'not_synchronized'
 
     @api.depends('offer_ids.quantity')
     def _compute_available_qty(self):
+        # Sum the quantity across all offers
         for record in self:
             record.available_qty = sum(record.offer_ids.mapped('quantity'))
 
     @api.depends('offer_ids')
     def _compute_offer_count(self):
+        # Count number of offers linked to the product
         for product in self:
             product.offer_count = len(product.offer_ids)
 
     @api.depends_context('company')
     def _compute_company_currency_id(self):
+        # Get currency of current company
         self.company_currency_id = self.env.company.currency_id
 
     def action_view_offers(self):
+        """ Opens the offers related to the product in list/form view """
         self.ensure_one()
         offers = self.env['apotheke.product.offer'].search([('product_id', '=', self.id)])
         if not offers:
@@ -99,10 +104,15 @@ class ApothekeProduct(models.Model):
 
     @api.onchange('setting_id')
     def _onchange_setting_id(self):
+        """ Filters shop_ids domain when setting_id is changed """
         if self.shop_ids:
             self.shop_ids = self.shop_ids.filtered(lambda shop: shop.setting_id == self.setting_id)
 
     def action_sync_with_odoo(self):
+        """
+        Link or create Odoo product templates based on Apotheke product data.
+        Sends notification about how many were linked or created.
+        """
         ProductTemplate = self.env['product.template']
         updated = 0
         created = 0
@@ -161,6 +171,10 @@ class ApothekeProduct(models.Model):
             _logger.exception(f"!!! Notification failed: {notif_error}")
 
     def action_update_odoo_product_quantities(self):
+        """
+        Update Odoo inventory quantities for each linked product
+        based on available offer quantity. Sends success/failure notifications.
+        """
         StockQuant = self.env['stock.quant']
         Warehouse = self.env['stock.warehouse']
         updated = 0

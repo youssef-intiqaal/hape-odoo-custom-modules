@@ -34,6 +34,11 @@ class ShopApothekeShop(models.Model):
     )
 
     def fetch_shop_channels(self):
+        """
+        Fetch channels associated with this shop from the Shop Apotheke API.
+        Clears old channels before importing new ones.
+        Displays a success or failure notification to the user.
+        """
         for shop in self:
             if not shop.shop_number:
                 continue
@@ -83,6 +88,10 @@ class ShopApothekeShop(models.Model):
                 })
 
     def fetch_delivery_methods(self):
+        """
+        Fetch delivery methods from the Shop Apotheke API and create/update delivery carriers accordingly.
+        Links carriers to this shop and sends real-time notifications to the user.
+        """
         for shop in self:
             if not shop.shop_number:
                 continue

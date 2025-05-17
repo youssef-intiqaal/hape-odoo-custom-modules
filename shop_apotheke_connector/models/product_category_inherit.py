@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Developed by Youssef Omri AKA DZEUF
+
 from odoo import models, fields
 
 class ProductCategory(models.Model):

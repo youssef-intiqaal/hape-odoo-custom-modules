@@ -27,12 +27,22 @@ class ImportProductQueue(models.Model):
 
     @api.model
     def create(self, vals):
-        # Add the sequence
+        """
+        Override create to assign a sequence number to the queue name if it's not set.
+        """
         if not vals.get('name') or vals['name'] == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('import.product.queue.sequence') or _('New')
         return super().create(vals)
 
     def action_create_apotheke_products(self):
+        """
+        Process each queue line:
+        - Validates required fields
+        - Skips if product already exists
+        - Creates new 'apotheke.product' records
+        - Logs successes and failures
+        - Updates queue state and sends user notification
+        """
         ApothekeProduct = self.env['apotheke.product']
         total = len(self.line_ids.filtered(lambda l: l.state == 'draft'))
         proceeded = 0
@@ -99,6 +109,11 @@ class ImportProductQueue(models.Model):
         })
 
     def _create_log(self, status, message):
+        """
+        Utility method to create a log entry.
+        :param status: Log type: info, success, or error
+        :param message: Log message content
+        """
         self.log_ids.create({
             'queue_id': self.id,
             'timestamp': datetime.now(),
