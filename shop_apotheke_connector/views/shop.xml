@@ -8,13 +8,12 @@
             <list string="Shop Apotheke Shops">
                 <field name="shop_number"/>
                 <field name="name"/>
-                <field name="setting_id" invisible="not setting_id" readonly="0"/>
+                <field name="setting_id" invisible="not setting_id" readonly="1"/>
                 <field name="channel_ids" widget="many2many_tags"/>
                 <field name="delivery_method_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
-
     <!-- Shop Form View -->
     <record id="view_shop_apotheke_shop_form" model="ir.ui.view">
         <field name="name">shop.apotheke.shop.form</field>
@@ -48,7 +47,6 @@
             </form>
         </field>
     </record>
-
     <!-- Shop Action -->
     <record id="action_shop_apotheke_shop" model="ir.actions.act_window">
         <field name="name">Shops</field>
@@ -61,7 +59,6 @@
             </p>
         </field>
     </record>
-
     <!-- Tree View -->
     <record id="view_shop_apotheke_shop_channel_tree" model="ir.ui.view">
         <field name="name">shop.apotheke.shop.channel.tree</field>
@@ -75,7 +72,6 @@
             </list>
         </field>
     </record>
-
     <!-- Form View -->
     <record id="view_shop_apotheke_shop_channel_form" model="ir.ui.view">
         <field name="name">shop.apotheke.shop.channel.form</field>
@@ -93,7 +89,6 @@
             </form>
         </field>
     </record>
-
     <!-- Action -->
     <record id="action_shop_apotheke_shop_channel" model="ir.actions.act_window">
         <field name="name">Shop Channels</field>

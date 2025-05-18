@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Inherited Form View to add EAN field -->
+    <!-- Inherited Product Template Form View to the new fields from the connector -->
     <record id="product_template_form_view_connector_inherit" model="ir.ui.view">
         <field name="name">product.template.connector.inherit</field>
         <field name="model">product.template</field>

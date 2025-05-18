@@ -20,7 +20,8 @@ class ShopApothekeConnectorSetting(models.Model):
     display_name = fields.Char(string='Name', compute='_compute_display_name', store=True)
     create_product_if_not_found = fields.Boolean(
         string='Create Product if Not Found in Odoo',
-        help='If checked, the connector will create a product in Odoo when a matching one is not found.'
+        help='If checked, the connector will create a product in Odoo when a matching one is not found.',
+        default= True
     )
 
     @api.depends('server')

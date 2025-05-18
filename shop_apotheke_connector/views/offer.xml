@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <!-- Offer Tree View -->
     <record id="view_tree_apotheke_product_offer" model="ir.ui.view">
         <field name="name">apotheke.product.offer.tree</field>
         <field name="model">apotheke.product.offer</field>
@@ -21,7 +22,7 @@
             </list>
         </field>
     </record>
-
+    <!-- Offer Form View -->
     <record id="view_form_apotheke_product_offer" model="ir.ui.view">
         <field name="name">apotheke.product.offer.form</field>
         <field name="model">apotheke.product.offer</field>
@@ -61,7 +62,7 @@
             </form>
         </field>
     </record>
-
+    <!-- Offer Action -->
     <record id="action_apotheke_product_offer" model="ir.actions.act_window">
         <field name="name">Offers</field>
         <field name="res_model">apotheke.product.offer</field>

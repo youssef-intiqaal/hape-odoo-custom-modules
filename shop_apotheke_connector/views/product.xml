@@ -40,7 +40,6 @@
             </list>
         </field>
     </record>
-
     <!-- Product Form View -->
     <record id="view_apotheke_product_form" model="ir.ui.view">
         <field name="name">apotheke.product.form</field>
@@ -100,7 +99,6 @@
             </form>
         </field>
     </record>
-
     <!-- Product Action -->
     <record id="action_apotheke_product" model="ir.actions.act_window">
         <field name="name">Apotheke Products</field>

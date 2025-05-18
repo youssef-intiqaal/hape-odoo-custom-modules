@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Inherited Partner Form View to add new fields from the connector -->
     <record id="res_partner_view_form_inherit_connector" model="ir.ui.view">
         <field name="name">res.partner.view.form.inherit.connector</field>
         <field name="model">res.partner</field>

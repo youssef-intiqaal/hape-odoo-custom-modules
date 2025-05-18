@@ -13,7 +13,6 @@
             </list>
         </field>
     </record>
-
     <!-- Setting Form View -->
     <record id="view_shop_apotheke_connector_setting_form" model="ir.ui.view">
         <field name="name">shop.apotheke.connector.setting.form</field>
@@ -25,6 +24,7 @@
                         <field name="server" placeholder="https://your-instance.mirakl.net"/>
                         <field name="api_key"/>
                     </group>
+                    <!-- TODO add control of auto product creation -->
                     <group string="Import Settings">
                         <field name="create_product_if_not_found" widget="boolean_toggle"/>
                     </group>
@@ -42,7 +42,6 @@
             </form>
         </field>
     </record>
-
     <!-- Setting Action -->
     <record id="action_shop_apotheke_settings" model="ir.actions.act_window">
         <field name="name">Settings</field>

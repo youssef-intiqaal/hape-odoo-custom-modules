@@ -68,7 +68,6 @@
             </form>
         </field>
     </record>
-
     <!-- Category Queue Tree View -->
     <record id="view_import_category_queue_tree" model="ir.ui.view">
         <field name="name">import.category.queue.tree</field>
@@ -85,7 +84,6 @@
             </list>
         </field>
     </record>
-
     <!-- Category Queue Action -->
     <record id="action_import_category_queue" model="ir.actions.act_window">
         <field name="name">Category Queues</field>

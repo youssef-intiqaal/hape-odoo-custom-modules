@@ -67,7 +67,6 @@
             </form>
         </field>
     </record>
-
     <!-- Product Queue Tree View -->
     <record id="view_import_product_queue_tree" model="ir.ui.view">
         <field name="name">import.product.queue.tree</field>
@@ -87,7 +86,6 @@
             </list>
         </field>
     </record>
-
     <!-- Product Queue Action -->
     <record id="action_import_product_queue" model="ir.actions.act_window">
         <field name="name">Product Queues</field>

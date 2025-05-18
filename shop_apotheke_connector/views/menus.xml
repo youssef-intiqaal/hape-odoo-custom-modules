@@ -103,5 +103,4 @@
               parent="menu_shop_apotheke_configuration"
               action="action_apotheke_tax"
               sequence="4"/>
-
 </odoo>
