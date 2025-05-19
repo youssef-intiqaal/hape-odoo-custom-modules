@@ -126,6 +126,7 @@ class ApothekeProduct(models.Model):
 
                     # Try to find an existing product by SKU or EAN
                     existing_product = ProductTemplate.search([
+                        '&',
                         '|',
                         ('default_code', '=', product.sku),
                         ('ean', '=', product.ean),
