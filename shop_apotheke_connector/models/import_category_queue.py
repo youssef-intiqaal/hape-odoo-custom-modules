@@ -64,7 +64,7 @@ class ImportCategoryQueue(models.Model):
         - Logs results
         - Sends user notification
         """
-        ProductCategory = self.env['product.category']
+        ProductCategory = self.env['apotheke.category']
         total = len(self.line_ids.filtered(lambda l: l.state == 'draft'))
         failed = 0
         proceeded = 0
@@ -86,7 +86,7 @@ class ImportCategoryQueue(models.Model):
                 existing = ProductCategory.search([('code', '=', line.code)], limit=1)
                 if existing:
                     line.state = 'failed'
-                    self._create_log('error', f"[{line.code}] Already exists in Odoo.")
+                    self._create_log('error', f"[{line.code}] Already exists in Apotheke Categories.")
                     failed += 1
                     continue
 
@@ -104,6 +104,7 @@ class ImportCategoryQueue(models.Model):
                     'name': line.name,
                     'code': line.code,
                     'parent_id': parent_id,
+                    'setting_id': self.setting_id.id,
                 })
 
                 line.state = 'processed'

@@ -6,3 +6,5 @@ from . import import_product_wizard
 from . import import_offer_wizard
 from . import update_apotheke_qty_wizard
 from . import import_apotheke_order_wizard
+from . import transfer_to_apotheke_wizard
+from . import apotheke_create_offer_wizard

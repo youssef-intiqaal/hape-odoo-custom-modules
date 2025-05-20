@@ -9,7 +9,7 @@
                 <header>
                     <button name="action_synchronize_categories"
                             type="object"
-                            string="Synchronize Categories with Odoo"
+                            string="Synchronize Categories"
                             class="btn-primary"
                             invisible="state != 'draft'"/>
                     <button name="action_synchronize_categories"

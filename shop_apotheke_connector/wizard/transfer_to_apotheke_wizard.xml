@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Transfer Category Wizard View -->
+    <record id="view_transfer_to_apotheke_wizard_form" model="ir.ui.view">
+        <field name="name">transfer.to.apotheke.wizard.form</field>
+        <field name="model">transfer.to.apotheke.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Transfer to Shop Apotheke">
+                <group>
+                    <field name="setting_id" required="1" string="Instance"/>
+                </group>
+                <footer>
+                    <button string="Transfer" type="object" name="action_confirm_transfer" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!-- Transfer Category Wizard Action -->
+    <record id="action_open_transfer_to_apotheke_wizard" model="ir.actions.act_window">
+        <field name="name">Transfer to Shop Apotheke</field>
+        <field name="res_model">transfer.to.apotheke.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_product_ids': active_ids}</field>
+    </record>
+
+</odoo>

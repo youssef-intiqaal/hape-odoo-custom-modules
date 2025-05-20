@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <data>
+        <!-- Inherited Sale Order List View to the new fields from the connector to the order and its lines -->
+        <record id="view_quotation_tree_with_onboarding_inherit_connector" model="ir.ui.view">
+            <field name="name">sale.order.view.list.inherit.connector</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="apotheke_order_id" optional="show"/>
+                </xpath>
+            </field>
+        </record>
         <!-- Inherited Sale Order Form View to the new fields from the connector to the order and its lines -->
         <record id="sale_order_view_form_inherit_connector" model="ir.ui.view">
             <field name="name">sale.order.view.form.inherit.connector</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-
                 <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']" position="after">
                     <field name="commission" widget="monetary" optional="show"/>
                 </xpath>

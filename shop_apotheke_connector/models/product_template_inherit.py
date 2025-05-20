@@ -10,6 +10,7 @@ class ProductCategory(models.Model):
     ean = fields.Char(string='EAN')
     apotheke_qty_updated = fields.Boolean(string="Apotheke Qty Updated", default=False)
     last_update_datetime = fields.Datetime(string="Last Apotheke Update Time")
+    transferred_to_apotheke = fields.Boolean(string="Transferred to Apotheke", default=False, readonly=False)
 
     def write(self, vals):
         # If sales price is being changed, reset apotheke_qty_updated
@@ -46,6 +47,18 @@ class ProductCategory(models.Model):
             'context': {
                 'default_product_id': self.id,
                 'default_product_ean': self.ean,
+            }
+        }
+
+    def action_open_transfer_wizard(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Transfer to Shop Apotheke',
+            'res_model': 'transfer.to.apotheke.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_product_ids': self.ids,
             }
         }
 

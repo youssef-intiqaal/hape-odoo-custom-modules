@@ -10,6 +10,7 @@
                     <field name="setting_id" required="1"/>
                     <field name="shop_id" domain="[('setting_id', '=', setting_id)]" required="1"/>
                     <field name="channel_id" domain="[('shop_id', '=', shop_id)]" required="1"/>
+                    <field name="change_state_on_apotheke" widget="boolean_toggle"/>
                 </group>
                 <footer>
                     <button name="action_import_orders" string="Import Orders" type="object" class="btn-primary"/>

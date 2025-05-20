@@ -5,7 +5,7 @@
         <field name="name">apotheke.product.offer.tree</field>
         <field name="model">apotheke.product.offer</field>
         <field name="arch" type="xml">
-            <list string="Product Offers">
+            <list string="Product Offers" create="0">
                 <field name="shop_id"/>
                 <field name="shop_offer_id"/>
                 <field name="offer_sku"/>
@@ -29,6 +29,15 @@
         <field name="arch" type="xml">
             <form string="Product Offer">
                 <sheet>
+                    <div class="alert alert-warning" role="alert">
+                        <h4><strong>Offer Update Notice</strong></h4>
+                        Any changes made to the <strong>Price</strong> or <strong>Quantity</strong> fields of this offer
+                        will be
+                        automatically synchronized with Shop Apotheke via their API.<br/>
+                        There is no need to perform any manual action. Updates are pushed immediately to ensure
+                        consistency between Odoo and the Shop Apotheke platform.<br/>
+                        You will be notified in case of any synchronization errors.
+                    </div>
                     <group>
                         <group>
                             <field name="shop_id"/>
@@ -45,8 +54,10 @@
                         <group>
                             <field name="product_sku"/>
                             <field name="product_ean"/>
+                            <field name="state_code"/>
                         </group>
                         <group>
+                            <field name="pricelist_id"/>
                             <field name="price" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
                             <field name="quantity"/>
                             <field name="apotheke_tax_id"/>
@@ -54,9 +65,8 @@
                         </group>
                     </group>
                     <group>
-                        <field name="state_code"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
+                        <field name="start_date" invisible="1"/>
+                        <field name="end_date" invisible="1"/>
                     </group>
                 </sheet>
             </form>

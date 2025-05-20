@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_apotheke_import_log_tree" model="ir.ui.view">
+        <field name="name">apotheke.import.operation.log.tree</field>
+        <field name="model">apotheke.import.operation.log</field>
+        <field name="arch" type="xml">
+            <list create="0" decoration-success="state == 'success'"
+                       decoration-danger="state == 'failed'">
+                <field name="create_date"/>
+                <field name="setting_id"/>
+                <field name="shop_id"/>
+                <field name="channel_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'success'"
+                       decoration-danger="state == 'failed'"/>
+                <field name="imported_order_count"/>
+                <field name="error_message"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_apotheke_import_log" model="ir.actions.act_window">
+        <field name="name">Import Logs</field>
+        <field name="res_model">apotheke.import.operation.log</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

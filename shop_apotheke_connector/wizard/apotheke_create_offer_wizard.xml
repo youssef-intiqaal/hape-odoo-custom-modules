@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_apotheke_create_offer_wizard_form" model="ir.ui.view">
+        <field name="name">apotheke.create.offer.wizard.form</field>
+        <field name="model">apotheke.create.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Offer">
+                <group>
+                    <div class="alert alert-warning" role="alert" invisible="not setting_id">
+                        <h3>Offer Creation Notice</h3>
+                        This operation may take a short time to complete, as Shop Apotheke may require a few seconds to
+                        process and publish new offers.<br/><br/>
+                        This functionality performs the following actions:
+                        <ul>
+                            <li>Verifies if the product exists on Shop Apotheke.</li>
+                            <li>If the product is found, checks whether an offer already exists.</li>
+                            <li>If no offer is found, a new offer will be created and published.</li>
+                            <li>If an offer is found, you can simply modify it using the related offers accessible from
+                                the smart button above.</li>
+                        </ul>
+                        Please be patient while the system communicates with the external API and completes the
+                        synchronization process.
+                    </div>
+                </group>
+                <group>
+                    <field name="setting_id" readonly="1"/>
+                    <field name="shop_id"/>
+                    <field name="channel_id"/>
+                    <field name="pricelist_id"/>
+                    <field name="price" widget="monetary"
+                           options="{'currency_field': 'currency_id'}"/>
+                    <field name="qty"/>
+                    <field name="tax_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                </group>
+                <div class="oe_row">
+                    <label for="shop_sku"/>
+                    <field name="shop_sku" class="oe_inline"/>
+                    <button name="action_generate_shop_sku"
+                            string="Generate SKU"
+                            type="object"
+                            icon="fa-magic"
+                            class="btn-link oe_inline"
+                            invisible="shop_sku"/>
+                </div>
+                <footer>
+                    <button name="action_confirm_create_offer" string="Create" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

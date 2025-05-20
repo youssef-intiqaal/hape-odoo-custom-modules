@@ -103,4 +103,16 @@
               parent="menu_shop_apotheke_configuration"
               action="action_apotheke_tax"
               sequence="4"/>
+    <!-- Categories Menu -->
+    <menuitem id="menu_apotheke_category"
+              name="Categories"
+              parent="menu_shop_apotheke_configuration"
+              action="action_apotheke_category"
+              sequence="5"/>
+    <!-- Automatic Import Orders Log Menu -->
+    <menuitem id="menu_apotheke_import_log_action"
+              name="Automatic Order Import Log"
+              parent="menu_shop_apotheke_configuration"
+              action="action_apotheke_import_log"
+              sequence="6"/>
 </odoo>

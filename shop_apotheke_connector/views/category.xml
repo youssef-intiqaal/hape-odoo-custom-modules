@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Apotheke Category List View -->
+    <record id="view_apotheke_category_tree" model="ir.ui.view">
+        <field name="name">apotheke.category.tree</field>
+        <field name="model">apotheke.category</field>
+        <field name="arch" type="xml">
+            <list string="Apotheke Categories">
+                <field name="setting_id"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+            </list>
+        </field>
+    </record>
+    <!-- Apotheke Category Form View -->
+    <record id="view_apotheke_category_form" model="ir.ui.view">
+        <field name="name">apotheke.category.form</field>
+        <field name="model">apotheke.category</field>
+        <field name="arch" type="xml">
+            <form string="Apotheke Category">
+                <sheet>
+                    <group>
+                        <field name="setting_id"/>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="parent_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Apotheke Category Search View -->
+    <record id="view_apotheke_category_search" model="ir.ui.view">
+        <field name="name">apotheke.category.search</field>
+        <field name="model">apotheke.category</field>
+        <field name="arch" type="xml">
+            <search string="Search Categories">
+                <!-- Search fields -->
+                <field name="name" string="Name"/>
+                <field name="code" string="Code"/>
+                <field name="parent_id" string="Parent Category"/>
+
+                <!-- Group By -->
+                <group expand="0" string="Group By">
+                    <filter name="group_by_instance" string="Instance" context="{'group_by': 'setting_id'}"/>
+                    <filter name="group_by_parent" string="Parent Category" context="{'group_by': 'parent_id'}"/>
+                    <filter name="group_by_code" string="Code" context="{'group_by': 'code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Apotheke Category Action -->
+    <record id="action_apotheke_category" model="ir.actions.act_window">
+        <field name="name">Apotheke Categories</field>
+        <field name="res_model">apotheke.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_instance': 1,
+                               'search_default_group_by_parent': 1
+
+                               }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Apotheke category
+            </p>
+        </field>
+    </record>
+</odoo>

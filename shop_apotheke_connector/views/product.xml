@@ -5,7 +5,7 @@
         <field name="name">apotheke.product.tree</field>
         <field name="model">apotheke.product</field>
         <field name="arch" type="xml">
-            <list default_order="available_qty desc">
+            <list default_order="available_qty desc" create="0">
                 <header>
                     <button name="action_sync_with_odoo"
                             type="object"
@@ -46,6 +46,9 @@
         <field name="model">apotheke.product</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_open_create_offer_wizard" type="object" string="Create Offer" class="btn-primary"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_offers"

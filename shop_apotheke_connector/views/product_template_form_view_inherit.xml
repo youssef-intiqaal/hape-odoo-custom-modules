@@ -8,22 +8,27 @@
         <field name="arch" type="xml">
             <field name="default_code" position="after">
                 <field name="ean"/>
+                <field name="transferred_to_apotheke" widget="boolean_toggle" readonly="1"/>
             </field>
             <header position="inside">
+                <button name="action_open_transfer_wizard"
+                        type="object"
+                        string="Transfer to Shop Apotheke"
+                        class="btn-primary"
+                        invisible="transferred_to_apotheke"/>
+
                 <button name="action_update_quantity_apotheke"
                         string="Update Apotheke Quantity &amp; Price"
                         type="object"
                         class="btn-primary"/>
             </header>
             <xpath expr="//div[hasclass('oe_title')]" position="before">
-                <label for="last_update_datetime"/>
+                <label for="last_update_datetime" invisible="not last_update_datetime"/>
                 <field name="last_update_datetime" readonly="1"/>
             </xpath>
             <xpath expr="//field[@name='product_variant_count']" position="before">
                 <widget name="web_ribbon" title="Updated" bg_color="text-bg-success"
                         invisible="not apotheke_qty_updated"/>
-                <widget name="web_ribbon" title="Outdated" bg_color="text-bg-danger"
-                        invisible="apotheke_qty_updated"/>
                 <br/>
                 <br/>
                 <br/>

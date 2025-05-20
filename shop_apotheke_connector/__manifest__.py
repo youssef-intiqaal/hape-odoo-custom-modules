@@ -11,6 +11,7 @@
     'category': 'Tools',
     'data': [
         'data/sequences.xml',
+        'data/cron.xml',
         'security/ir.model.access.csv',
 
         'wizard/import_category_wizard_view.xml',
@@ -18,6 +19,8 @@
         'wizard/import_offer_wizard_view.xml',
         'wizard/update_apotheke_qty_wizard_view.xml',
         'wizard/import_apotheke_order_wizard_view.xml',
+        'wizard/transfer_to_apotheke_wizard.xml',
+        'wizard/apotheke_create_offer_wizard.xml',
 
         'views/product_category_form_view_inherit.xml',
         'views/product_template_form_view_inherit.xml',
@@ -33,6 +36,8 @@
         'views/offer.xml',
         'views/tax.xml',
         'views/sale_view_inherit.xml',
+        'views/category.xml',
+        'views/apotheke_import_operation_log.xml',
         'views/menus.xml',
     ],
     'license': 'LGPL-3',

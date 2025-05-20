@@ -27,11 +27,11 @@ class ApothekeProduct(models.Model):
     )
     main_image = fields.Binary(string='Main Image', readonly=True)
     name = fields.Char(string='Product Name', required=True, tracking=True)
-    sku = fields.Char(string='SKU', required=True, tracking=True)
-    ean = fields.Char(string='EAN', required=False, tracking=True)
+    sku = fields.Char(string='SKU', required=True, tracking=True, readonly=True)
+    ean = fields.Char(string='EAN', required=True, tracking=True, readonly=True)
     brand = fields.Char(string='Brand', readonly=True)
-    category_id = fields.Many2one('product.category', string='Category')
-    odoo_product_id = fields.Many2one('product.template', string='Odoo Product', tracking=True, readonly=False)
+    category_id = fields.Many2one('apotheke.category', string='Category', required=False)
+    odoo_product_id = fields.Many2one('product.template', string='Odoo Product', tracking=True, readonly=True)
     publish_date = fields.Date(string='Publish Date', tracking=True, readonly=True)
     state_sync_odoo = fields.Selection([
         ('not_synchronized', 'Not Linked'),
@@ -55,6 +55,11 @@ class ApothekeProduct(models.Model):
     company_currency_id = fields.Many2one('res.currency', compute='_compute_company_currency_id')
     offer_count = fields.Integer(string='Offers Count', compute='_compute_offer_count')
     qty_updated = fields.Boolean(string='Quantity Updated', readonly=True, tracking=True)
+
+    _sql_constraints = [
+        ('unique_apotheke_product_sku', 'unique(sku)', 'Apotheke product SKU must be unique.'),
+        ('unique_apotheke_product_ean', 'unique(ean)', 'Apotheke product EAN must be unique.')
+    ]
 
     @api.onchange('odoo_product_id')
     def _onchange_odoo_product_id(self):
@@ -228,4 +233,22 @@ class ApothekeProduct(models.Model):
             _logger.error(f"Failed to send qty update notification: {notif_err}")
 
         return True
+
+    def action_open_create_offer_wizard(self):
+        return {
+            'name': 'Create Offer',
+            'type': 'ir.actions.act_window',
+            'res_model': 'apotheke.create.offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_setting_id': self.setting_id.id,
+                'default_product_id': self.id,
+            },
+        }
+
+    def unlink(self):
+        self.mapped('odoo_product_id').write({'transferred_to_apotheke': False})
+        return super().unlink()
+
 

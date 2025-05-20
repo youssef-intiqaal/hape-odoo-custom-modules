@@ -14,6 +14,7 @@ class ImportApothekeOrderWizard(models.TransientModel):
                               domain="[('setting_id', '=', setting_id)]")
     channel_id = fields.Many2one('shop.apotheke.shop.channel', string='Channel', required=True,
                                  domain="[('shop_id', '=', shop_id)]")
+    change_state_on_apotheke = fields.Boolean(string='Change state on Shop Apotheke', default=False)
 
     @api.onchange('setting_id')
     def _onchange_setting_id(self):
@@ -231,28 +232,30 @@ class ImportApothekeOrderWizard(models.TransientModel):
                         if apotheke_tax and apotheke_tax.tax_id:
                             line_tax_ids.append(apotheke_tax.tax_id.id)
 
-                    amount = 0
-                    taxes = line.get('taxes', [])
-                    for tax in taxes:
-                        parts = tax.get('amount_breakdown', {}).get('parts', [])
-                        for part in parts:
-                            amount = part.get('amount')
+
+                    quantity = float(line.get("quantity", 1))
+                    total_price = float(line.get("price", 0))
+                    tax_amount = sum(t.get("amount", 0) for t in line.get("taxes", []))
+                    subtotal = total_price - tax_amount
 
                     commission = float(line.get('total_commission', 0))
 
                     sale_line_model.create({
                         'order_id': sale_order.id,
                         'product_id': product.id,
-                        'product_uom_qty': float(line.get('quantity', 1)),
-                        'price_unit': float(line.get('price', 0)) - amount,
+                        'product_uom_qty': quantity,
+                        'price_unit': subtotal/quantity,
                         'name': product.name or line.get('product_sku'),
                         'apotheke_line_id': line.get('order_line_id'),
                         'tax_id': [(6, 0, line_tax_ids)],
                         'commission': commission,
-                        'apotheke_state': line.get('order_line_state')
+                        'apotheke_state': line.get('order_line_state'),
                     })
 
                 success_count += 1
+
+                if self.change_state_on_apotheke:
+                    sale_order.accept_on_apotheke()
 
             self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
                 'type': 'success',

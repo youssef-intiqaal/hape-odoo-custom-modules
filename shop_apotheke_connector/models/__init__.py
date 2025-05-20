@@ -15,3 +15,6 @@ from . import import_product_queue
 from . import import_offer_queue
 from . import offer
 from . import tax
+from . import category
+from . import apotheke_import_operation_log
+from . import import_apotheke_cron_helper
