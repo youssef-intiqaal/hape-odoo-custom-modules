@@ -46,7 +46,7 @@ class ImportProductWizard(models.TransientModel):
                 category_id = None
                 if category_text:
                     last_word = category_text.split('/')[-1].strip()
-                    category_id = self.env['product.category'].search([('name', '=ilike', last_word)], limit=1)
+                    category_id = self.env['apotheke.category'].search([('name', '=ilike', last_word)], limit=1)
 
                 image_data = None
                 if image_url:
