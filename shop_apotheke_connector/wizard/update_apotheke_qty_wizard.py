@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class UpdateApothekeQtyWizard(models.TransientModel):
     _name = 'update.apotheke.qty.wizard'
-    _description = 'Update Apotheke Update Apotheke Quantity & Price Wizard'
+    _description = 'Update Apotheke Quantity & Price Wizard'
 
     product_id = fields.Many2one('product.template', string="Product", required=True)
     product_ean = fields.Char(string="EAN", readonly=True)

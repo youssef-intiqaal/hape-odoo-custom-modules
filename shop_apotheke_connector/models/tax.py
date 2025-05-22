@@ -7,7 +7,7 @@ class ApothekeTax(models.Model):
     _name = 'apotheke.tax'
     _description = 'Shop Apotheke Tax'
     _inherit = ['mail.thread']
-    _rec_name = 'code'
+    _rec_name = 'tax_id'
 
     tax_id = fields.Many2one('account.tax', string='Odoo Tax')
     code = fields.Char(string='Tax Code', required=True)

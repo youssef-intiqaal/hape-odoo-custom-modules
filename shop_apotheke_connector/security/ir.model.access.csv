@@ -24,4 +24,9 @@ access_transfer_to_apotheke_wizard,access_transfer_to_apotheke_wizard,model_tran
 access_apotheke_create_offer_wizard,access_apotheke_create_offer_wizard,model_apotheke_create_offer_wizard,,1,1,1,1
 access_import_apotheke_cron_helper_user,access.import.apotheke.cron.helper.user,model_import_apotheke_cron_helper,,1,0,0,0
 access_apotheke_import_operation_log_user,access.apotheke.import.operation.log.user,model_apotheke_import_operation_log,,1,0,0,0
+access_import_order_queue,access.import.order.queue,model_import_order_queue,,1,1,1,1
+access_import_order_queue_line,access.import.order.queue.line,model_import_order_queue_line,,1,1,1,1
+access_import_order_queue_line_line,access.import.order.queue.line.line,model_import_order_queue_line_line,,1,1,1,1
+access_import_order_queue_log,access.import.order.queue.log,model_import_order_queue_log,,1,1,1,1
+access_import_order_queue_line_log,access.import.order.queue.line.log,model_import_order_queue_line_log,,1,1,1,1
 

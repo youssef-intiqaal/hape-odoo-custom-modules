@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Order Queue Form View -->
+    <record id="view_import_order_queue_form" model="ir.ui.view">
+        <field name="name">import.order.queue.form</field>
+        <field name="model">import.order.queue</field>
+        <field name="arch" type="xml">
+            <form string="Import Order Queue" create="0">
+                <header>
+                    <button name="action_create_orders"
+                            string="Create Orders"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_retry_all_failed_lines"
+                            string="Retry All Failed"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-repeat"
+                            invisible="state not in ['failed', 'partially_processed']"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Processed" bg_color="text-bg-success"
+                            invisible="state != 'processed'"/>
+                    <widget name="web_ribbon" title="Failed" bg_color="text-bg-danger"
+                            invisible="state != 'failed'"/>
+                    <widget name="web_ribbon" title="Partial" bg_color="text-bg-warning"
+                            invisible="state != 'partially_processed'"/>
+                    <group>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name" required="1"/></h1>
+                        </div>
+                        <field name="setting_id"/>
+                        <field name="shop_id"/>
+                        <field name="channel_id"/>
+                        <field name="create_date" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Orders">
+                            <field name="line_ids">
+                                <list editable="bottom" decoration-info="state == 'draft'"
+                                      decoration-success="state == 'processed'"
+                                      decoration-danger="state == 'failed'"
+                                      decoration-warning="state == 'partially_processed'" open_form_view="1">
+                                    <field name="apotheke_order_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="order_reference_for_customer" column_invisible="1"/>
+                                    <field name="order_lines_ids"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="total_amount" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                           decoration-success="state == 'processed'"
+                                           decoration-danger="state == 'failed'"
+                                           decoration-warning="state == 'partially_processed'"/>
+                                    <button name="action_retry_order_creation" type="object" string="Retry"
+                                            icon="fa-repeat"
+                                            invisible="state in ['processed', 'draft']" class="btn-primary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids">
+                                <list decoration-info="status == 'info'"
+                                      decoration-success="status == 'success'"
+                                      decoration-danger="status == 'error'"
+                                      default_order="create_date desc">
+                                    <field name="timestamp"/>
+                                    <field name="message"/>
+                                    <field name="status" widget="badge" decoration-info="status == 'info'"
+                                           decoration-success="status == 'success'"
+                                           decoration-danger="status == 'error'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Order Queue Tree View -->
+    <record id="view_import_order_queue_tree" model="ir.ui.view">
+        <field name="name">import.order.queue.tree</field>
+        <field name="model">import.order.queue</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-warning="state == 'partially_processed'"
+                  decoration-success="state == 'processed'" decoration-danger="state == 'failed'" create="0" edit="0"
+                  delete="0">
+                <field name="name"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'"
+                       decoration-success="state == 'processed'"
+                       decoration-danger="state == 'failed'"
+                       decoration-warning="state == 'partially_processed'"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Order Queue Action -->
+    <record id="action_import_order_queue" model="ir.actions.act_window">
+        <field name="name">Order Queues</field>
+        <field name="res_model">import.order.queue</field>
+        <field name="view_mode">list,form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_neutral_face">
+                No imported order queues found. Click create to start one.
+            </p>
+        </field>
+    </record>
+
+    <!-- Order Queue Line Form View -->
+    <record id="view_import_order_queue_line_form" model="ir.ui.view">
+        <field name="name">import.order.queue.line.form</field>
+        <field name="model">import.order.queue.line</field>
+        <field name="arch" type="xml">
+            <form string="Order Line" create="0" edit="0" delete="0">
+                <header>
+                    <button name="action_retry_order_creation" type="object" string="Retry"
+                            icon="fa-repeat"
+                            invisible="state in ['draft', 'processed']" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Processed" bg_color="text-bg-success"
+                            invisible="state != 'processed'"/>
+                    <widget name="web_ribbon" title="Failed" bg_color="text-bg-danger"
+                            invisible="state != 'failed'"/>
+
+                    <group>
+                        <field name="queue_id"/>
+                        <field name="apotheke_order_id"/>
+                        <field name="partner_id"/>
+                        <field name="order_reference_for_customer" invisible="1"/>
+                        <field name="apotheke_tax_ids" widget="many2many_tags" invisible="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="order_lines_ids">
+                                <list editable="bottom" decoration-info="state == 'draft'"
+                                      decoration-success="state == 'processed'"
+                                      decoration-danger="state == 'failed'" create="0" edit="0" delete="0">
+                                    <field name="apotheke_line_id"/>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="price_unit" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="commission" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="total_tax" column_invisible="1"/>
+                                    <field name="total_amount" widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="tax_id" widget="many2many_tags"/>
+                                    <field name="apotheke_state" widget="badge"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                           decoration-success="state == 'processed'"
+                                           decoration-danger="state == 'failed'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Logs">
+                            <field name="log_ids">
+                                <list decoration-info="status == 'info'"
+                                      decoration-success="status == 'success'"
+                                      decoration-danger="status == 'error'"
+                                      default_order="create_date desc" create="0" edit="0" delete="0">
+                                    <field name="timestamp"/>
+                                    <field name="message"/>
+                                    <field name="status" widget="badge" decoration-info="status == 'info'"
+                                           decoration-success="status == 'success'"
+                                           decoration-danger="status == 'error'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Order Queue Line Tree View -->
+    <record id="view_import_order_queue_line_tree" model="ir.ui.view">
+        <field name="name">import.order.queue.line.tree</field>
+        <field name="model">import.order.queue.line</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" delete="0">
+                <field name="apotheke_order_id"/>
+                <field name="partner_id"/>
+                <field name="order_reference_for_customer"/>
+                <field name="queue_id"/>
+            </list>
+        </field>
+    </record>
+</odoo>

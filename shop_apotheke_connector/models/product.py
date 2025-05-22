@@ -28,7 +28,7 @@ class ApothekeProduct(models.Model):
     main_image = fields.Binary(string='Main Image', readonly=True)
     name = fields.Char(string='Product Name', required=True, tracking=True)
     sku = fields.Char(string='SKU', required=True, tracking=True, readonly=True)
-    ean = fields.Char(string='EAN', required=True, tracking=True, readonly=True)
+    ean = fields.Char(string='EAN', required=False, tracking=True, readonly=True)
     brand = fields.Char(string='Brand', readonly=True)
     category_id = fields.Many2one('apotheke.category', string='Category', required=False)
     odoo_product_id = fields.Many2one('product.template', string='Odoo Product', tracking=True, readonly=True)

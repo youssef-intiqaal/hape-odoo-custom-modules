@@ -18,6 +18,7 @@ class ApothekeImportOperationLog(models.Model):
     ], string='State', required=True)
 
     imported_order_count = fields.Integer(string='Imported Orders', default=0)
+    note = fields.Text(string='Note')
     error_message = fields.Text(string='Error Message')
 
     create_date = fields.Datetime(string='Execution Time', readonly=True)

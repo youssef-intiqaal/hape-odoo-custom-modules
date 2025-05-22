@@ -13,6 +13,7 @@ from . import product
 from . import import_category_queue
 from . import import_product_queue
 from . import import_offer_queue
+from . import import_order_queue
 from . import offer
 from . import tax
 from . import category

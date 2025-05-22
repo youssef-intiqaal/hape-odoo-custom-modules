@@ -112,7 +112,37 @@ class ApothekeCreateOfferWizard(models.TransientModel):
                     self._notify(
                         f"This product already has an offer in the selected channel ({self.channel_id.label}). You can open the offer and update it instead.",
                         success=False)
+                    # Attempt to sync the offer locally if it does not already exist in apotheke.product.offer
+                    shop_sku = offer.get("shop_sku")
+                    if not shop_sku:
+                        return
+
+                    existing_offer_local = self.env['apotheke.product.offer'].search([
+                        ('offer_sku', '=', shop_sku),
+                        ('shop_id', '=', self.shop_id.id),
+                        ('channel_ids', 'in', self.channel_id.id),
+                    ], limit=1)
+
+                    if not existing_offer_local:
+                        # Build local offer record from API data
+                        offer_vals = {
+                            "shop_id": self.shop_id.id,
+                            "offer_sku": offer.get("shop_sku"),
+                            "offer_active": offer.get("active", True),
+                            "shop_offer_id": str(offer.get("offer_id")),
+                            "product_sku": offer.get("product_sku"),
+                            "product_ean": self.product_id.ean,
+                            "price": offer.get("price", 0.0),
+                            "quantity": offer.get("quantity", 0),
+                            "state_code": offer.get("state_code"),
+                            "product_id": self.product_id.id,
+                            "channel_ids": [(6, 0, self.channel_id.ids)],
+                            "apotheke_tax_id": self.tax_id.id,
+                        }
+                        self.env['apotheke.product.offer'].create(offer_vals)
+
                     return
+
 
         # 3. Create new offer
         payload = {

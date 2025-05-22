@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Developed by Youssef Omri AKA DZEUF
 
-from odoo import models, api
+from odoo import models, api, _
 import logging
 import traceback
 
@@ -16,6 +16,7 @@ class ImportApothekeCronHelper(models.TransientModel):
         Setting = self.env['shop.apotheke.connector.setting']
         Wizard = self.env['import.apotheke.order.wizard']
         Log = self.env['apotheke.import.operation.log']
+        OrderQueue = self.env['import.order.queue']
 
         settings = Setting.search([])
         _logger.info("Starting Apotheke cron job for %s settings", len(settings))
@@ -39,7 +40,7 @@ class ImportApothekeCronHelper(models.TransientModel):
                             'setting_id': setting.id,
                             'shop_id': shop.id,
                             'channel_id': channel.id,
-                            'change_state_on_apotheke': False,
+                            'change_state_on_apotheke': True,
                         })
                         wizard_result = wizard.action_import_orders()
 
@@ -76,3 +77,35 @@ class ImportApothekeCronHelper(models.TransientModel):
                             'state': 'failed',
                             'error_message': error_trace,
                         })
+
+        # Now process all 'draft' order queues
+        draft_queues = OrderQueue.search([('state', '=', 'draft')])
+        _logger.info("Processing %s draft order queues", len(draft_queues))
+
+        for queue in draft_queues:
+            try:
+                _logger.info("Creating orders for queue %s", queue.name)
+                queue.action_create_orders()
+
+                Log.create({
+                    'setting_id': queue.setting_id.id,
+                    'shop_id': queue.shop_id.id,
+                    'channel_id': queue.channel_id.id,
+                    'state': 'success',
+                    'note': _('Processed order queue: %s') % queue.name,
+                })
+
+                _logger.info("Successfully processed queue %s", queue.name)
+
+            except Exception as e:
+                error_trace = traceback.format_exc()
+                _logger.error("Failed to process order queue %s\n%s", queue.name, error_trace)
+
+                Log.create({
+                    'setting_id': queue.setting_id.id,
+                    'shop_id': queue.shop_id.id,
+                    'channel_id': queue.channel_id.id,
+                    'state': 'failed',
+                    'note': _('Failed to process queue %s') % queue.name,
+                    'error_message': error_trace,
+                })

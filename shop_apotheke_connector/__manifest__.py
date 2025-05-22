@@ -33,6 +33,7 @@
         'views/import_category_queue.xml',
         'views/import_product_queue.xml',
         'views/import_offer_queue.xml',
+        'views/import_order_queue.xml',
         'views/offer.xml',
         'views/tax.xml',
         'views/sale_view_inherit.xml',

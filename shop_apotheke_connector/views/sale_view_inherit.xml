@@ -29,7 +29,7 @@
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <field name="apotheke_order_id" invisible="not from_apotheke"/>
-                    <field name="apotheke_offer_id" invisible="not from_apotheke"/>
+                    <field name="apotheke_offer_id" invisible="not from_apotheke or not apotheke_offer_id"/>
                     <field name="shop_id" invisible="not from_apotheke"/>
                     <field name="channel_id" invisible="not from_apotheke"/>
                     <field name="from_apotheke" invisible="1"/>
