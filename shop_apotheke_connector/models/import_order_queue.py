@@ -238,14 +238,24 @@ class ImportOrderQueueLine(models.Model):
 
         # Check for existing order
         if SaleOrder.search_count([('apotheke_order_id', '=', line.apotheke_order_id)]):
-            line.state = 'failed'
-            msg = f"Order {line.apotheke_order_id} already exists. Skipping retry."
-            line_log_msgs.append((0, 0, {
-                'message': msg, 'status': 'error'
-            }))
-            line.log_ids = line_log_msgs
-            line.order_lines_ids.write({'state': 'failed'})
-            return
+            existing_order = SaleOrder.search([('apotheke_order_id', '=', line.apotheke_order_id)])
+            if existing_order:
+                try:
+                    # Cancel the sale order if it's already confirmed (from CRON)
+                    if existing_order.state not in ('cancel', 'draft'):
+                        existing_order._action_cancel()
+
+                    # Delete the sales order
+                    existing_order.unlink()
+                except Exception as e:
+                    msg = f"Failed to cancel/delete existing order {existing_order.name}: {str(e)}"
+                    line_log_msgs.append((0, 0, {
+                        'message': msg, 'status': 'error'
+                    }))
+                    line.log_ids = line_log_msgs
+                    line.state = 'failed'
+                    line.order_lines_ids.write({'state': 'failed'})
+                    return
 
         if not line.partner_id:
             line.state = 'failed'

@@ -165,10 +165,11 @@ class ImportApothekeOrderWizard(models.TransientModel):
                             rate = float(tax.get('rate', 0))
                             if code:
                                 ap_tax = self.env['apotheke.tax'].search([
-                                    ('code', '=', code), ('value', '=', rate)
+                                    ('code', '=', code), ('value', '=', rate), ('company_id', '=', self.env.company.id)
+
                                 ], limit=1)
                                 if not ap_tax:
-                                    ap_tax = self.env['apotheke.tax'].create({'code': code, 'value': rate})
+                                    ap_tax = self.env['apotheke.tax'].create({'code': code, 'value': rate, 'company_id': self.env.company.id})
                                 if ap_tax.id not in tax_ids:
                                     tax_ids.append(ap_tax.id)
 
@@ -238,10 +239,10 @@ class ImportApothekeOrderWizard(models.TransientModel):
                                 rate = float(tax.get('rate', 0))
                                 if code:
                                     ap_tax = self.env['apotheke.tax'].search([
-                                        ('code', '=', code), ('value', '=', rate)
+                                        ('code', '=', code), ('value', '=', rate), ('company_id', '=', self.env.company.id)
                                     ], limit=1)
                                     if not ap_tax:
-                                        ap_tax = self.env['apotheke.tax'].create({'code': code, 'value': rate})
+                                        ap_tax = self.env['apotheke.tax'].create({'code': code, 'value': rate, 'company_id': self.env.company.id})
                                     if ap_tax.id not in tax_ids:
                                         tax_ids.append(ap_tax.id)
                                     if ap_tax.id not in line_tax_ids:

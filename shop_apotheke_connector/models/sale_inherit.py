@@ -22,6 +22,9 @@ class SaleOrder(models.Model):
         compute='_compute_accepted_on_apotheke',
         store=True
     )
+    _sql_constraints = [
+        ('unique_apotheke_order_id', 'unique(apotheke_order_id)', 'Apotheke Order ID must be unique.'),
+    ]
 
     @api.depends('order_line.accepted_on_apotheke')
     def _compute_accepted_on_apotheke(self):
@@ -181,49 +184,52 @@ class SaleOrder(models.Model):
 
         # Update billing address
         bill = data['customer']['billing_address']
-        vals_bill = {
-            'street': bill.get('street_1') or '',
-            'street2': bill.get('street_2') or '',
-            'zip': bill.get('zip_code') or '',
-            'city': bill.get('city') or '',
-        }
-        if bill.get('country_iso_code'):
-            country = self.env['res.country'].search([('code', '=', bill['country_iso_code'])], limit=1)
-            if country:
-                vals_bill['country_id'] = country.id
+        if bill:
+            vals_bill = {
+                'street': bill.get('street_1') or '',
+                'street2': bill.get('street_2') or '',
+                'zip': bill.get('zip_code') or '',
+                'city': bill.get('city') or '',
+            }
+            if bill.get('country_iso_code'):
+                country = self.env['res.country'].search([('code', '=', bill['country_iso_code'])], limit=1)
+                if country:
+                    vals_bill['country_id'] = country.id
 
-        self.partner_id.write(vals_bill)
-        self.partner_invoice_id.write(vals_bill)
+            self.partner_id.write(vals_bill)
+            self.partner_invoice_id.write(vals_bill)
 
         # Update shipping address
         ship = data['customer']['shipping_address']
-        vals_ship = {
-            'street': ship.get('street_1') or '',
-            'street2': ship.get('street_2') or '',
-            'zip': ship.get('zip_code') or '',
-            'city': ship.get('city') or '',
-        }
-        if ship.get('country_iso_code'):
-            country = self.env['res.country'].search([('code', '=', ship['country_iso_code'])], limit=1)
-            if country:
-                vals_ship['country_id'] = country.id
+        if ship:
+            vals_ship = {
+                'street': ship.get('street_1') or '',
+                'street2': ship.get('street_2') or '',
+                'zip': ship.get('zip_code') or '',
+                'city': ship.get('city') or '',
+            }
+            if ship.get('country_iso_code'):
+                country = self.env['res.country'].search([('code', '=', ship['country_iso_code'])], limit=1)
+                if country:
+                    vals_ship['country_id'] = country.id
 
-        self.partner_shipping_id.write(vals_ship)
+            self.partner_shipping_id.write(vals_ship)
 
         # Update main partner (name + language if valid)
         cust = data['customer']
-        partner_vals = {
-            'name': "%s %s" % (cust.get('firstname') or '', cust.get('lastname') or ''),
-        }
+        if cust:
+            partner_vals = {
+                'name': "%s %s" % (cust.get('firstname') or '', cust.get('lastname') or ''),
+            }
 
-        locale = cust.get('locale')
-        if locale:
-            lang_code = locale.split('_')[0]
-            lang = self.env['res.lang'].search([('code', '=', lang_code)], limit=1)
-            if lang:
-                partner_vals['lang'] = lang.code
+            locale = cust.get('locale')
+            if locale:
+                lang_code = locale.split('_')[0]
+                lang = self.env['res.lang'].search([('code', '=', lang_code)], limit=1)
+                if lang:
+                    partner_vals['lang'] = lang.code
 
-        self.partner_id.write(partner_vals)
+            self.partner_id.write(partner_vals)
 
         # Update commitment date
         latest = data.get('delivery_date', {}).get('latest')

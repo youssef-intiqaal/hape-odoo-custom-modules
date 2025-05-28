@@ -125,12 +125,13 @@ class ImportOfferWizard(models.TransientModel):
                 for field in additional_fields:
                     code = field.get('code', '')
                     if 'tax' in code.lower():
-                        existing_tax = tax_model.search([('code', '=', code)], limit=1)
+                        existing_tax = tax_model.search([('code', '=', code), ('company_id', '=', self.env.company.id)], limit=1)
                         if not existing_tax:
                             tax = tax_model.create({
                                 'tax_id': False,
                                 'code': code,
                                 'value': float(field.get('value') or 0),
+                                'company_id': self.env.company.id
                             })
                             queue_line.write({'apotheke_tax_id': tax.id})
                             created_tax_codes.append(code)

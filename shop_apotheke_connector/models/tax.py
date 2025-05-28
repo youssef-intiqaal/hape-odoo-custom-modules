@@ -12,6 +12,7 @@ class ApothekeTax(models.Model):
     tax_id = fields.Many2one('account.tax', string='Odoo Tax')
     code = fields.Char(string='Tax Code', required=True)
     value = fields.Float(string='Tax Value (%)', required=True)
+    company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.company)
 
     @api.model
     def create(self, vals):
@@ -20,6 +21,7 @@ class ApothekeTax(models.Model):
             tax = self.env['account.tax'].search([
                 ('amount', '=', vals['value']),
                 ('type_tax_use', '=', 'sale'),
+                ('company_id', '=', self.env.company.id),
             ], limit=1)
             if tax:
                 vals['tax_id'] = tax.id
